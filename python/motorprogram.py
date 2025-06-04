@@ -10,22 +10,37 @@ def load_motorprogram_file(path):
     consume them sequentially according to the expected structure.
     """
 
-    with open(path, "r") as f:
+    with open(path, "r", encoding="utf-8", errors="ignore") as f:
         nums = []
         for line in f:
+            # Skip commented or empty lines
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
             for tok in line.split():
-                nums.append(float(tok))
+                try:
+                    nums.append(float(tok))
+                except ValueError as exc:  # pragma: no cover - malformed token
+                    raise ValueError(f"cannot parse token '{tok}' in {path}") from exc
+
+    def next_token():
+        nonlocal idx
+        if idx >= len(nums):
+            raise ValueError(f"file '{path}' truncated while reading parameters")
+        val = nums[idx]
+        idx += 1
+        return val
 
     idx = 0
-    ns = int(nums[idx]); idx += 1
+    ns = int(next_token())
     stroke_meta = []
     nsub_total = 0
     for _ in range(ns):
-        nn = int(nums[idx]); idx += 1
-        pos = [nums[idx], nums[idx + 1]]; idx += 2
+        nn = int(next_token())
+        pos = [next_token(), next_token()]
         invscales = []
         for _ in range(nn):
-            invscales.append(nums[idx]); idx += 1
+            invscales.append(next_token())
         stroke_meta.append({"nn": nn, "pos": pos, "invscales": invscales})
         nsub_total += nn
 
@@ -46,8 +61,7 @@ def load_motorprogram_file(path):
         for _ in range(nn):
             ctrl = []
             for _ in range(ncontrol):
-                ctrl.append([nums[idx], nums[idx + 1]])
-                idx += 2
+                ctrl.append([next_token(), next_token()])
             shapes.append(ctrl)
         strokes.append({
             "pos": np.asarray(pos, dtype=float),

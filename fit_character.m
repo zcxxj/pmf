@@ -40,6 +40,10 @@ end
 if 7~=exist(resultFolder,'dir')
     mkdir(resultFolder);
 end
+modelsFolder=fullfile(resultFolder,'models');
+if 7~=exist(modelsFolder,'dir')
+    mkdir(modelsFolder);
+end
 
 %parpool('local',5);
 verbose=args.verbose;
@@ -97,6 +101,8 @@ for iRun=1:numRuns
                 modelWithName.model=fit_motorprograms(img,1,true,true,args.fastTraining);
                 close all;
                 models{iClass,iTrain}=modelWithName;
+                paramFile=fullfile(modelsFolder,sprintf('run%d_class%d_train%d.txt',iRun,iClass,iTrain));
+                write_motorprogram_to_file(modelWithName.model.samples_type{1},paramFile);
                 if verbose
                     fprintf(1,'Train%d ',iTrain);
                 end

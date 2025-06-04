@@ -10,7 +10,7 @@ from utils import preprocess_image
 import numpy as np
 
 
-def main(result_folder, test_folder, limit=3):
+def main(result_folder = r"C:\Users\zcxxj\Desktop\my_proj\实验室code\pmf\output\character\bg_noise\1", test_folder = r"C:\Users\zcxxj\Desktop\my_proj\实验室code\pmf\data\MNIST_mini\testing", limit=3):
     model_files = []
     model_dir = os.path.join(result_folder, 'models')
     for name in sorted(os.listdir(model_dir)):
@@ -42,7 +42,8 @@ def main(result_folder, test_folder, limit=3):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print('usage: python run_testing.py <result_folder> <test_folder>')
-        sys.exit(1)
-    main(sys.argv[1], sys.argv[2])
+    # if len(sys.argv) != 3:
+    #     print('usage: python run_testing.py <result_folder> <test_folder>')
+    #     sys.exit(1)
+    # main(sys.argv[1], sys.argv[2])
+    main()

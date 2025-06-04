@@ -102,7 +102,10 @@ for iRun=1:numRuns
                 close all;
                 models{iClass,iTrain}=modelWithName;
                 paramFile=fullfile(modelsFolder,sprintf('run%d_class%d_train%d.txt',iRun,iClass,iTrain));
-                write_motorprogram_to_file(modelWithName.model.samples_type{1},paramFile);
+                % Save the first MCMC sample so that it can be loaded by the
+                % Python testing code. samples_type{1} is a cell array of
+                % MotorPrograms, so grab its first element.
+                write_motorprogram_to_file(modelWithName.model.samples_type{1}{1},paramFile);
                 if verbose
                     fprintf(1,'Train%d ',iTrain);
                 end

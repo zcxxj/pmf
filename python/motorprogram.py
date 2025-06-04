@@ -18,18 +18,36 @@ def load_motorprogram_file(path):
 
     idx = 0
     ns = int(nums[idx]); idx += 1
-    strokes = []
-    NCONTROL = 4
+    stroke_meta = []
+    nsub_total = 0
     for _ in range(ns):
         nn = int(nums[idx]); idx += 1
         pos = [nums[idx], nums[idx + 1]]; idx += 2
         invscales = []
-        shapes = []
         for _ in range(nn):
             invscales.append(nums[idx]); idx += 1
+        stroke_meta.append({"nn": nn, "pos": pos, "invscales": invscales})
+        nsub_total += nn
+
+    remaining = len(nums) - idx
+    if nsub_total == 0:
+        raise ValueError("motor program contains no sub-strokes")
+    if remaining % (2 * nsub_total) != 0:
+        raise ValueError(
+            f"cannot determine number of control points from file; {remaining} values left for {nsub_total} sub-strokes"
+        )
+    ncontrol = remaining // (2 * nsub_total)
+    strokes = []
+    for meta in stroke_meta:
+        nn = meta["nn"]
+        pos = meta["pos"]
+        invscales = meta["invscales"]
+        shapes = []
+        for _ in range(nn):
             ctrl = []
-            for _ in range(NCONTROL):
-                ctrl.append([nums[idx], nums[idx + 1]]); idx += 2
+            for _ in range(ncontrol):
+                ctrl.append([nums[idx], nums[idx + 1]])
+                idx += 2
             shapes.append(ctrl)
         strokes.append({
             "pos": np.asarray(pos, dtype=float),

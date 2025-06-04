@@ -19,6 +19,7 @@ def load_motorprogram_file(path):
     idx = 0
     ns = int(nums[idx]); idx += 1
     strokes = []
+    NCONTROL = 4
     for _ in range(ns):
         nn = int(nums[idx]); idx += 1
         pos = [nums[idx], nums[idx + 1]]; idx += 2
@@ -26,7 +27,10 @@ def load_motorprogram_file(path):
         shapes = []
         for _ in range(nn):
             invscales.append(nums[idx]); idx += 1
-            shapes.append([nums[idx], nums[idx + 1]]); idx += 2
+            ctrl = []
+            for _ in range(NCONTROL):
+                ctrl.append([nums[idx], nums[idx + 1]]); idx += 2
+            shapes.append(ctrl)
         strokes.append({
             "pos": np.asarray(pos, dtype=float),
             "invscales": np.asarray(invscales, dtype=float),

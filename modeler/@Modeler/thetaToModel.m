@@ -12,6 +12,11 @@ M.blur_sigma=0.5;
 
 count=1;
 
+% initialize globalShift in case list_sid does not include the
+% first stroke. This avoids using an undefined variable when
+% updating positions of other strokes.
+globalShift=[0,0];
+
 
 M.parameters.ink_ncon=theta(count);
 count=count+1;

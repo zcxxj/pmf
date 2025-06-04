@@ -20,3 +20,15 @@ def load_motorprogram_file(path):
                              'invscales': np.array(invscales, dtype=float),
                              'shapes': np.array(shapes, dtype=float)})
     return {'strokes': strokes}
+
+
+def translate_motorprogram(model, dx, dy):
+    """Return a copy of the model translated by (dx, dy)."""
+    new_strokes = []
+    for stk in model['strokes']:
+        new_strokes.append({
+            'pos': stk['pos'] + np.array([dx, dy]),
+            'invscales': stk['invscales'].copy(),
+            'shapes': stk['shapes'].copy(),
+        })
+    return {'strokes': new_strokes}

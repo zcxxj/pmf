@@ -25,7 +25,10 @@ the stroke parameters so that they can be loaded outside MATLAB.  A Python
 implementation of the testing procedure is provided under `python/`.
 The modules `motorprogram.py`, `render.py`, `utils.py`, and `modeler.py`
 mirror the MATLAB functions used for testing. The entry script
-`run_testing.py` can be invoked as
+`run_testing.py` performs a lightweight version of the MATLAB
+`Modeler.runTesting` routine.  It loads the trained motor programs,
+searches for a translation that best matches each test image, and prints
+classification accuracy.  Invoke it as
 
 ```bash
 python3 python/run_testing.py <result_folder> <test_folder>

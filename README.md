@@ -19,6 +19,24 @@ fit_character;
 fit_building;
 ```
 
+After running `fit_character`, the trained motor programs for each class are
+saved as text files under `output/character/.../models`.  These files contain
+the stroke parameters so that they can be loaded outside MATLAB.  A Python
+implementation of the testing procedure is provided under `python/`.
+The modules `motorprogram.py`, `render.py`, `utils.py`, and `modeler.py`
+mirror the MATLAB functions used for testing. The entry script
+`run_testing.py` performs a lightweight version of the MATLAB
+`Modeler.runTesting` routine.  It loads the trained motor programs,
+searches for a translation that best matches each test image, and prints
+classification accuracy.  Invoke it as
+
+```bash
+python3 python/run_testing.py <result_folder> <test_folder>
+```
+
+where `result_folder` is the output directory produced by MATLAB and
+`test_folder` points to the corresponding dataset of test images.
+
 ### Computing resources
 
 Please be patient! Running the code on a single CPU is quite slow. Taking an Intel(R) Core(TM) i5-3470 CPU @3.20GHz for example, it would consume tens of minutes, a couple of hours, and tens of hours to _fit_cylinder_, _fit_building_, and _fit_character_, respectively. Fortunately, the code can be naturally run in parallel to achieve few-shot character recognition.

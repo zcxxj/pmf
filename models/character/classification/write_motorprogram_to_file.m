@@ -1,5 +1,14 @@
 % input M: MotorProgram, file_name: File to write
 function write_motorprogram_to_file(M,file_name)
+%WRITE_MOTORPROGRAM_TO_FILE Serialize a MotorProgram to a text file
+%   The input can be either a MotorProgram object or a cell array whose
+%   first element is a MotorProgram.  This makes the function compatible
+%   with the output of fit_motorprograms where samples are stored in a
+%   cell array.
+
+if iscell(M)
+    M = M{1};
+end
 fileID = fopen(file_name,'w');
 % fprintf(fileID,'# the values of the parameters of the motor program\n');
 list_sid=1:M.ns;
